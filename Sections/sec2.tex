@@ -1,0 +1,67 @@
+\section{整除与同余}
+\subsection{整除}
+\begin{frame}{整除基本性质}
+\textbf{整除的定义}：若整数$a$除以非零整数$b$，商为整数且余数为零，即$a$能被$b$整除，记做$b|a$，读作：$b$整除$a$或$a$能被$b$整除。$a$叫做$b$的倍数，$b$叫做$a$的约数，或称为因数。
+\pause
+\begin{itemize}
+  \item 若$a|c,b|c$，则$a|(b\pm c)$
+  \item 若$a|b$，则对任意的$c(c\neq 0)$，有$a|bc$
+  \item 若$a|b$，且$b|c$，则$a|c$
+  \item 若$a|bc$，且$(a,c)=1$，则$a|b$
+  \item 若$c|a$，且$c|b$，则对于任意整数$m,n$，有$c|(ma+nb)$
+  \item 若$a|c,b|c$，且$(a,b)=1$，则$ab|c$
+  \item \textbf{带余除法定理}： $\forall a,b>0, a,b\in \N$，$\exists$唯一的数对$q,r$，使$a=bq+r,(0\leq r<b)$。
+\end{itemize}
+\end{frame}
+
+
+\subsection{同余}
+\begin{frame}{同余基本性质}
+\begin{itemize}
+  \item 若$a\equiv b\pmod{m},c\equiv d\pmod{m}$，\\则$a\pm b\equiv c\pm d\pmod{m}$
+  \item 若$a\equiv b\pmod{m},c\equiv d\pmod{m}$，\\则$a\times b\equiv c\times d\pmod{m}$ \pause
+  \item 证明基本思路：$a=k_1m+b,c=k_2m+b$ \pause
+  \item 基本用法：求模运算下求解问题（避免大数运算）、快速幂 \pause
+  \item \textbf{注意}：除法不满足以上的性质
+\end{itemize}
+\end{frame}
+
+\subsection{快速幂}
+\begin{frame}[fragile]{快速幂}
+  求解：$a^b\equiv x\pmod{m},(a,b\leq 1e9)$
+  \vspace{0.5cm}
+  \pause
+\begin{itemize}
+  \item 朴素求法：
+\begin{lstlisting}
+inline ll mpow(ll a, ll b, ll m) {
+  ll res = 1;
+  for (int i = 1; i <= b; ++i) 
+    res = res * a % m;
+  return res;
+}
+\end{lstlisting}
+  \item 时间复杂度：$O(b)$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{快速幂}
+  求解：$a^b\equiv x\pmod{m},(a,b\leq 1e9)$
+  \vspace{0.5cm}
+\begin{itemize}
+  \item 快速幂
+\begin{lstlisting}
+  inline ll mpow(ll a, ll b, ll m) {
+    ll res = 1;
+    while(b) {
+      if (b & 1) res = res * a % m;
+      a = a * a % m;
+      b >>= 1;
+    }
+    return res;
+  }
+\end{lstlisting}
+  \item 时间复杂度：$O(\log{b})$
+\end{itemize}
+\end{frame}
