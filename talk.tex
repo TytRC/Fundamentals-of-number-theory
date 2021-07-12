@@ -1,4 +1,4 @@
-\documentclass[9pt, c]{beamer}	% Compile at least twice!
+\documentclass[9pt, c, compress]{beamer}	% Compile at least twice!
 % \setbeamertemplate{navigation symbols}{}
 \usetheme{Hannover}
 \usepackage{ctex}
@@ -22,7 +22,8 @@
   multicol,			% Use Multi-columns
   multirow,			% Use Multi-rows
   pifont,			    % For Checkmarks
-  stmaryrd			% For brackets
+  stmaryrd,			% For brackets
+  xcolor % For define of variout colors
 }
 \usepackage[english]{babel}
 
@@ -97,6 +98,7 @@
 \usepackage{fontspec}
 \usepackage{listings}
 \usepackage{ulem}
+
 \lstset{ %
   % backgroundcolor=\color{white},      % choose the background color
   basicstyle=\footnotesize\fontspec{Consolas},  % size of fonts used for the code
@@ -104,7 +106,7 @@
   tabsize=4,
   breaklines=true,               % automatic line breaking only at whitespace
   captionpos=b,                  % sets the caption-position to bottom
-  commentstyle=\color{mygreen},  % comment style
+  commentstyle=\color{gray},  % comment style
   escapeinside={\%*}{*)},        % if you want to add LaTeX within your code
   keywordstyle=\color{blue},     % keyword style
   stringstyle=\color{mymauve}\ttfamily,  % string literal style
@@ -166,8 +168,10 @@ Codeforces: \textcolor{purple}{\href{https://codeforces.com/profile/dcac}{dcac}}
 {
 	\begin{frame}
 		% \frametitle{Outline}
-    \tableofcontents[currentsection]
-    \addtocounter{framenumber}{-1}
+    \begin{multicols}{2}
+      \tableofcontents[currentsection]
+      \addtocounter{framenumber}{-1}
+    \end{multicols}
 	\end{frame}
 }
 
@@ -203,6 +207,8 @@ Codeforces: \textcolor{purple}{\href{https://codeforces.com/profile/dcac}{dcac}}
 % 欧拉函数
 \include{Sections/sec5}
 
+% 乘法逆元
+\include{Sections/sec6}
 
 % Questions
 \section{结束}

@@ -1,0 +1,124 @@
+\section{乘法逆元}
+\subsection{简介}
+\begin{frame}[fragile]{乘法逆元}{简介}
+  \textbf{乘法逆元}：如果一个线性同余方程 $ax \equiv 1 \pmod b$，则 $x$ 称为 $a \bmod b$ 的逆元，记作 $a^{-1}$。\\
+  
+  \pause
+  \vspace{0.5cm}
+  \textbf{用处}：
+  \begin{itemize}
+    \item 求解$\frac{A}{B}\bmod{P}$
+    \item 避免浮点运算，提高精度
+    \item 某些题目的要求
+  \end{itemize}
+  
+  \pause 
+  \vspace{0.5cm}
+  \textbf{求解}：
+  \begin{itemize}
+    \item 快速幂方法
+    \item 拓展欧几里得方法
+    \pause
+    \item 依据个人喜好
+  \end{itemize}
+
+\end{frame}
+
+\subsection{单个求解}
+\begin{frame}[fragile]{乘法逆元}{求解单个}
+  \textbf{快速幂}
+  \begin{itemize}
+    \item \textbf{事实}：
+    $$
+    \begin{aligned}
+       &\;& a^{b-1} &\equiv& 1 \pmod p \\
+      &\Rightarrow& a\cdot a^{b-2} &\equiv& 1 \pmod p \\ 
+      &\Rightarrow& x &\equiv& a^{b-2} \pmod p
+    \end{aligned}
+    $$
+    \pause 
+    \item \textbf{算法实现}：
+    \begin{lstlisting}
+inline int qpow(long long a, int b) {
+  int ans = 1;
+  a = (a % p + p) % p;
+  for (; b; b >>= 1) {
+    if (b & 1) ans = (a * ans) % p;
+    a = (a * a) % p;
+  }
+  return ans;
+}
+// int inv = qpow(a, p - 2);
+    \end{lstlisting}
+    \pause 
+    \item 时间复杂度：$O(\log{n})$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{乘法逆元}{求解单个}
+  \textbf{拓展欧几里得}：
+  \begin{itemize}
+    \item \textbf{事实}：
+    $$
+    \begin{aligned}
+      ax\equiv 1 \pmod{p}\\
+      ax=(-y)\cdot p+1\\
+      \text{求解：}ax+py=1
+    \end{aligned}
+    $$
+
+    \pause
+    \item \textbf{算法实现}：
+    \begin{lstlisting}
+int exgcd(int a, int b, int& x, int& y) {
+  if (b == 0) {
+    x = 1, y = 0;
+    return a;
+  }
+  int g = exgcd(b, a % b, y, x);
+  y -= a / b * x;
+  return g;
+}
+// exgcd(a, p, x, y);
+// int inv = (x % p + p) % p;
+  \end{lstlisting}
+
+  \pause 
+  \item 时间复杂度：$O(\log{n})$
+\end{itemize}
+\end{frame}
+
+\subsection{多个求解}
+\begin{frame}[fragile]{乘法逆元}{求解$1\sim n$}
+  线性时间复杂度求出 $1,2,...,n$ 中每个数关于 $p$ 的逆元。
+  
+  \pause 
+  \begin{proof}
+    \textbf{事实}：$\forall p \in \Z,\space 1 \times 1 \equiv 1 \pmod p$恒成立，即$\pmod{p}$意义下$1^{-1}=1$。\\
+    
+    \pause 
+    \vspace{0.1cm}
+    \textbf{思路}：通过$1\sim i-1$的逆元在$O(1)$的复杂度下求解$i^{-1}$。\\
+    
+    \pause 
+    \vspace{0.1cm}
+    设：
+    $$
+    k = \lfloor \frac{p}{i} \rfloor, \space j = p \bmod i, \space\text{则}p = ki + j
+    $$
+    
+    \pause 
+    我们有：
+    $$
+    \begin{aligned}
+      &p=ki+j &\equiv& 0 &\pmod p&\\
+      \pause 
+      &ki\cdot{i^{-1}j^{-1}}+j\cdot{i^{-1}j^{-1}} &\equiv& 0\cdot{i^{-1}j^{-1}} &\pmod{p}& \\
+      &k\cdot{j^{-1}}+i^{-1} &\equiv& 0 &\pmod{p}& \\
+      \pause
+      &i^{-1} &\equiv& -k\cdot{j^{-1}} &\pmod{p}& \\
+      &i^{-1} &\equiv& -k\cdot \lfloor \frac{p}{i} \rfloor &\pmod{p}&
+    \end{aligned}
+    $$
+  \end{proof}
+\end{frame}
