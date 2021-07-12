@@ -1,0 +1,143 @@
+\section{莫比乌斯反演}
+\subsection{数论分块}
+\begin{frame}[fragile]{数论分块}
+  \begin{lemma}
+    $$
+      \forall a,b,c\in\mathbb{Z},\left\lfloor\frac{a}{bc}\right\rfloor=\left\lfloor\frac{\left\lfloor\frac{a}{b}\right\rfloor}{c}\right\rfloor
+    $$
+  \end{lemma}
+
+  \pause 
+  \begin{proof}
+    $$
+    \begin{aligned}
+      &\frac{a}{b}=\left\lfloor\frac{a}{b}\right\rfloor+r(0\leq r<1)\\
+      \implies
+      &\left\lfloor\frac{a}{bc}\right\rfloor
+      =\left\lfloor\frac{a}{b}\cdot\frac{1}{c}\right\rfloor
+      =\left\lfloor \frac{1}{c}\left(\left\lfloor\frac{a}{b}\right\rfloor+r\right)\right\rfloor
+      =\left\lfloor \frac{\left\lfloor\frac{a}{b}\right\rfloor}{c} +\frac{r}{c}\right\rfloor
+      =\left\lfloor \frac{\left\lfloor\frac{a}{b}\right\rfloor}{c}\right\rfloor\\
+    \end{aligned}
+    $$
+  \end{proof}
+
+  \pause 
+  \begin{lemma}
+    $$
+    \forall n \in \mathbb{N}_{+},  \left|\left\{ \lfloor \frac{n}{d} \rfloor \mid d \in \mathbb{N}_{+},d\leq n \right\}\right| \leq \lfloor 2\sqrt{n} \rfloor
+    $$
+    $|V|$ 表示集合 $V$ 的元素个数。
+  \end{lemma}
+\end{frame}
+
+\begin{frame}[fragile]{数论分块}{简介}
+  求解类似于$\sum\limits_{i=1}^{n}f(\lfloor \frac{n}{i} \rfloor)$的式子。（假设$f(x)$可以$O(1)$求出）
+  \begin{itemize}
+    \item 直接求和，时间复杂度为$O(n)$，可通过数据约为$n\leq 1e8$。
+    \item 事实上，$\lfloor \frac{n}{i} \rfloor$只有$O(\sqrt{n})$种，能否简化求和次数？
+  \end{itemize}
+
+  \pause 
+  \vspace{0.3cm}
+  对于任意一个 $i(i\leq n)$，我们需要找到一个最大的 $j(i\leq j\leq n)$，使得：
+  $$
+    \left\lfloor\frac{n}{i}\right\rfloor = \left\lfloor\frac{n}{j}\right\rfloor
+  $$
+  可得：
+  \begin{center}
+    $j=\left\lfloor\frac{n}{\left\lfloor\frac{n}{i}\right\rfloor}\right\rfloor$
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{数论分块}{证明}
+  \begin{proof} 
+    $$
+    \begin{aligned}
+      &\left\lfloor\frac{n}{i}\right\rfloor \leq \frac{n}{i}\\
+      \implies
+      &\left\lfloor\frac{n}{ \left\lfloor\frac{n}{i}\right\rfloor }\right\rfloor
+      \geq \left\lfloor\frac{n}{ \frac{n}{i} }\right\rfloor
+      = \left\lfloor i \right\rfloor=i \\
+      \implies
+      &i\leq \left\lfloor\frac{n}{ \left\lfloor\frac{n}{i}\right\rfloor }\right\rfloor=j
+    \end{aligned}
+    $$
+  \end{proof}
+  
+  \pause 
+  \begin{itemize}
+    \item \textbf{基本使用}：
+    \begin{lstlisting}
+for (int l = 1, r; l <= n; l = r + 1) {
+  int t = n / l;
+  r = n / t;
+  // ... 若 l <= i <= r，那么 n / i == t 为真
+}
+    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{数论分块}{例题}
+  \textbf{题目链接}：\href{https://www.luogu.com.cn/problem/P2261}{P2261 [CQOI2007]余数求和 - 洛谷}
+  \begin{block}{题目描述}
+    给定正整数$n$和$k$，求解：
+    $$
+      G(n,k)=\sum\limits_{i=1}^n k \bmod{i}
+    $$
+    数据范围：$1\leq n, k\leq 10^9$
+  \end{block}
+  
+  \pause
+  \begin{exampleblock}{题解}
+    \begin{itemize}
+      \item 直接求和，$O(n)$时间复杂度会TLE。
+      \pause
+      \item 转化为整除形式，然后数论分块：
+      $$
+        \begin{aligned}
+          ans &= \sum_{i=1}^n(k\bmod i) 
+               = \sum_{i=1}^nk-i\left\lfloor\frac{k}{i}\right\rfloor 
+               = n\cdot k - \sum_{i=1}^{\min(n,k)} i\left\lfloor\frac{k}{i}\right\rfloor
+        \end{aligned}
+      $$
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{数论分块}{例题}
+  
+  \begin{itemize}
+    \item \textbf{算法实现}：
+      \begin{lstlisting}
+#include<iostream>
+using namespace std;
+
+inline long long sum(long long i, long long j){
+    return (j * (j + 1) / 2 - i * (i - 1) / 2);
+}
+
+int main(){
+    long long n, k, ans;
+    cin >> n >> k;
+    ans = n * k;
+    for (long long i = 1, j; i <= k && i <= n; i = j + 1){
+        long long t = k / i;
+        j = min(k / t, n);
+        ans -= t * sum(i, j);
+    }
+    cout << ans ;
+    return 0;
+}
+    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{数论分块}{例题}
+  \textbf{题目推荐}：
+  \begin{itemize}
+    \item \href{https://www.luogu.com.cn/problem/P2261}{P2261 [CQOI2007]余数求和 - 洛谷}
+    \item \href{https://www.luogu.com.cn/problem/P2260}{P2260 [清华集训2012]模积和 - 洛谷}
+    \item \href{https://codeforces.com/gym/101485/attachments}{Debugging - Codeforces}
+  \end{itemize}
+\end{frame}
