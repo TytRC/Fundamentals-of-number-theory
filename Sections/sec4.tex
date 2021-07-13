@@ -13,7 +13,7 @@
     \begin{lstlisting}
 vector<int> breakdown(int n) {
   vector<int> res;
-  for (int i = 2; i * i <= n; i++) {
+  for (int i = 1; i * i <= n; i++) {
     if (n % i == 0) {
       res.push_back(i);
       res.push_back(n / i);
@@ -118,7 +118,7 @@ int gcd(int a[], int n) {
       \item \textbf{反向考虑}，即考虑一个数$x$，$1\sim n$中有多少数被它整除。
       \pause
       \item 显然为$\lfloor \frac{n}{x} \rfloor$个
-      \item 即求$\max\limits_{x}\{[\lfloor \frac{n}{x} \rfloor \geq k]\}$，
+      \item 即求$\max{x}$其中$x$满足$\{[\lfloor \frac{n}{x} \rfloor \geq k]\}$，
       显然答案为$\lfloor \frac{n}{k} \rfloor$
       \pause
       \item 时间复杂度：$O(1)$
@@ -240,7 +240,7 @@ int lcm(int a, int b) {
       \item 根据$P\times Q=\gcd(P,Q)\times \text{lcm}(P,Q)=x_0y_0$，我们可以得到$P\times Q$的值
       \item 枚举$i|(x_0y_0)$，考虑$i,\lfloor \frac{x_0y_0}{i} \rfloor$的最大公约数和最小公倍数是不是分别为$P,Q$即可
       \pause
-      \item 时间复杂度：$O(n\log{n})$
+      \item 时间复杂度：$O(\sqrt{x_0y_0}\log{x_0})$
     \end{itemize}
   \end{exampleblock}
 \end{frame}

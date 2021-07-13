@@ -1,7 +1,7 @@
 \section{乘法逆元}
 \subsection{简介}
 \begin{frame}[fragile]{乘法逆元}{简介}
-  \textbf{乘法逆元}：如果一个线性同余方程 $ax \equiv 1 \pmod b$，则 $x$ 称为 $a \bmod b$ 的逆元，记作 $a^{-1}$。\\
+  \textbf{乘法逆元}：如果一个线性同余方程 $ax \equiv 1 \pmod p$，则 $x$ 称为 $a$ 在$\pmod{p}$意义下的逆元，记作 $a^{-1}$。\\
   
   \pause
   \vspace{0.5cm}
@@ -31,9 +31,9 @@
     \item \textbf{事实}：
     $$
     \begin{aligned}
-       &\;& a^{b-1} &\equiv& 1 \pmod p \\
-      &\Rightarrow& a\cdot a^{b-2} &\equiv& 1 \pmod p \\ 
-      &\Rightarrow& x &\equiv& a^{b-2} \pmod p
+       &\;& a^{p-1} &\equiv& 1 \pmod p \\
+      &\Rightarrow& a\cdot a^{p-2} &\equiv& 1 \pmod p \\ 
+      &\Rightarrow& x &\equiv& a^{p-2} \pmod p
     \end{aligned}
     $$
     \pause 
@@ -117,8 +117,8 @@ int exgcd(int a, int b, int& x, int& y) {
       &k\cdot{j^{-1}}+i^{-1} &\equiv& 0 &\pmod{p}& \\
       \pause
       &i^{-1} &\equiv& -k\cdot{j^{-1}} &\pmod{p}& \\
-      &i^{-1} &\equiv& -k\cdot \lfloor \frac{p}{i} \rfloor &\pmod{p}&
+      &i^{-1} &\equiv& -\lfloor \frac{p}{i} \rfloor \cdot j^{-1} &\pmod{p}&
     \end{aligned}
     $$
   \end{proof}
-\end{frame}
+\end{frame} 

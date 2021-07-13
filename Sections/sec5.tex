@@ -20,7 +20,7 @@
     \item $n = \sum_{d|n}\varphi(d)$。由\textbf{莫比乌斯反演}可得。
     \pause
     \item 若$n=p^k$，其中$p$是质数，那么$\varphi(n)=p^k - p^{k-1}$。
-    \item 由唯一分解定理，设 $n = \prod_{i=1}^{n}p_i^{k_i}$，其中 $p_i$ 是质数，有 $\varphi(n) = n \cdot \prod\limits_{i = 1}^s{\dfrac{p_i - 1}{p_i}}$。
+    \item 由唯一分解定理，设 $n = \prod\limits_{i=1}^{s}p_i^{k_i}$，其中 $p_i$ 是质数，有 $\varphi(n) = n \cdot \prod\limits_{i = 1}^s{\dfrac{p_i - 1}{p_i}}$。
   \end{itemize}
 \end{frame}
 
@@ -88,7 +88,7 @@ void init() {
       \pause
       \item 只考虑$y<x$的部分，可得第$i$列只有$\varphi(i)$个人没被挡住，即可被看见
       \pause 
-      \item 所以$ans =2*(\sum\limits_{i=1}^n\varphi(i))+1$
+      \item 所以$ans =2*(\sum\limits_{i}\varphi(i))+1$
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -127,8 +127,8 @@ void init() {
     \pause 
     $$
     \begin{aligned}
-      & \prod_{i=1}^{n}(A_i\times a) &\equiv\prod_{i=1}^{n} A_i &\pmod{p}\\
-      \Rightarrow & a^{p-1}\prod_{i=1}^{n} A_i &\equiv\prod_{i=1}^{n} A_i &\pmod{p}\\
+      & \prod_{i=1}^{p-1}(A_i\times a) &\equiv\prod_{i=1}^{p-1} A_i &\pmod{p}\\
+      \Rightarrow & a^{p-1}\prod_{i=1}^{p-1} A_i &\equiv\prod_{i=1}^{p-1} A_i &\pmod{p}\\
       \Rightarrow & a^{p-1} &\equiv 1 &\pmod{p}
     \end{aligned}
     $$
@@ -175,7 +175,7 @@ void init() {
 \end{frame}
 
 \begin{frame}[fragile]{拓展欧拉定理}{例题}
-  \textbf{题目链接}：\href{https://acm.xidian.edu.cn/problem.php?id=1066}{P1066 A\^B\%P - XDOJ}
+  \textbf{题目链接}：\href{https://acm.xidian.edu.cn/problem.php?id=1066}{P1066 $A^B\%P$ - XDOJ}
   \begin{block}{题目描述}
     求解：
     $$
@@ -187,13 +187,13 @@ void init() {
   \pause
   \begin{exampleblock}{题解}
     \begin{itemize}
-      \item 即求$A^{\sum\limits_{i=0}^{n-1}B_i}\bmod{p}$，但是$B_i$是指数级增加，无法直接求出
+      \item 即求$A^{\prod\limits_{i=0}^{n-1}B_i}\bmod{p}$，但是$B_i$是指数级增加，无法直接求出
       \pause 
       \item 显然\textbf{欧拉降幂}，考虑适用条件
       \item $P=1e9+7$是质数，所以要么$\gcd(A,P)=1$，要么$P|A$
       \pause 
       \item 显然二者条件下，$A^{x}\equiv A^{x\bmod \varphi(P)} \pmod{P}$均成立
-      \item 所以先求出$\sum\limits_{i=0}^{n-1}B_i\bmod{\varphi(P)}\;\;\;\;(\varphi(P)=P-1)$即可。
+      \item 所以先求出$\prod\limits_{i=0}^{n-1}B_i\bmod{\varphi(P)}\;\;\;\;(\varphi(P)=P-1)$即可。
     \end{itemize}
   \end{exampleblock}
 \end{frame}
